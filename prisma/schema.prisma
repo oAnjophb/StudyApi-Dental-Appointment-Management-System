@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  RECEPTIONIST
+  PATIENT
+  DENTIST
+  ADMIN
+}
+
+enum AgendamentoStatus {
+  CONFIRMADO
+  CANCELADO
+  REAGENDAR
+  CONCLUIDO
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  email String @unique
+
+  password String
+
+  role Role
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@map("User")
+}
+
+model Dentist {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  specialty String
+
+  userId Int @unique
+
+  disponibility Disponibility[]
+
+  scheduleLock ScheduleLock[]
+
+  agendamentos Agendamento[]
+
+  servicos Servico[]
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
+
+model Patient {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  email String?
+
+  phone String
+
+  address String?
+
+  birthDate DateTime?
+
+  agendamentos Agendamento[]
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
+
+model Servico {
+  id Int @id @default(autoincrement())
+
+  nome String
+
+  duracaoMin Int
+
+  preco Float?
+
+  agendamentos Agendamento[]
+
+  dentists Dentist[]
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
+
+model Agendamento {
+  id Int @id @default(autoincrement())
+
+  dataHora DateTime
+
+  status AgendamentoStatus @default(CONFIRMADO)
+
+  pacienteId Int
+
+  paciente Patient @relation(fields: [pacienteId], references: [id])
+
+  dentistaId Int
+
+  dentista Dentist @relation(fields: [dentistaId], references: [id])
+
+  servicoId Int
+
+  servico Servico @relation(fields: [servicoId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
+
+model Disponibility {
+  id Int @id @default(autoincrement())
+
+  diaDaSemana Int
+
+  horaInicio String
+
+  horaFim String
+
+  dentistaId Int
+
+  dentista Dentist @relation(fields: [dentistaId], references: [id])
+}
+
+model ScheduleLock {
+  id Int @id @default(autoincrement())
+
+  dateInitial DateTime
+
+  dateFinal DateTime
+
+  motive String?
+
+  dentistaId Int
+
+  dentista Dentist @relation(fields: [dentistaId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
