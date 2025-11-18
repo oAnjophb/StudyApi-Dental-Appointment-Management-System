@@ -7,150 +7,161 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  RECEPTIONIST
-  PATIENT
-  DENTIST
+enum UserRole {
   ADMIN
+  RECEPTIONIST
+  DENTIST
 }
 
-enum AgendamentoStatus {
-  CONFIRMADO
-  CANCELADO
-  REAGENDAR
-  CONCLUIDO
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  NO_SHOW
+  CANCELLED
+}
+
+enum Weekday {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
 }
 
 model User {
-  id Int @id @default(autoincrement())
-
-  name String
-
-  email String @unique
-
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
   password String
+  role     UserRole
+  dentist  Dentist? @relation("DentistUser")
 
-  role Role
+  createdAppointments Appointment[] @relation("CreatedBy")
+  updatedAppointments Appointment[] @relation("UpdatedBy")
 
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
 
-  @@map("User")
+  @@map("users")
 }
 
 model Dentist {
-  id Int @id @default(autoincrement())
+  userId    Int     @unique
+  user      User    @relation("DentistUser", fields: [userId], references: [id], onDelete: Cascade)
+  specialty String?
 
-  name String
-
-  specialty String
-
-  userId Int @unique
-
-  disponibility Disponibility[]
-
-  scheduleLock ScheduleLock[]
-
-  agendamentos Agendamento[]
-
-  servicos Servico[]
+  availabilities Availability[]
+  scheduleLocks  ScheduleLock[]
+  appointments   Appointment[]
+  services       DentistService[]
 
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
+
+  @@map("dentists")
 }
 
 model Patient {
-  id Int @id @default(autoincrement())
-
-  name String
-
-  email String?
-
-  phone String
-
-  address String?
-
+  id        Int       @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String?
   birthDate DateTime?
+  address   String?
+  notes     String?
 
-  agendamentos Agendamento[]
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-}
-
-model Servico {
-  id Int @id @default(autoincrement())
-
-  nome String
-
-  duracaoMin Int
-
-  preco Float?
-
-  agendamentos Agendamento[]
-
-  dentists Dentist[]
+  appointments Appointment[]
 
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
+
+  @@map("patients")
 }
 
-model Agendamento {
-  id Int @id @default(autoincrement())
+model Service {
+  id       Int      @id @default(autoincrement())
+  name     String
+  duration Int
+  price    Decimal?
 
-  dataHora DateTime
-
-  status AgendamentoStatus @default(CONFIRMADO)
-
-  pacienteId Int
-
-  paciente Patient @relation(fields: [pacienteId], references: [id])
-
-  dentistaId Int
-
-  dentista Dentist @relation(fields: [dentistaId], references: [id])
-
-  servicoId Int
-
-  servico Servico @relation(fields: [servicoId], references: [id])
+  dentists     DentistService[]
+  appointments Appointment[]
 
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
+
+  @@map("services")
 }
 
-model Disponibility {
-  id Int @id @default(autoincrement())
+model DentistService {
+  dentistId Int
+  serviceId Int
 
-  diaDaSemana Int
+  dentist Dentist @relation(fields: [dentistId], references: [userId])
+  service Service @relation(fields: [serviceId], references: [id])
 
-  horaInicio String
+  @@id([dentistId, serviceId])
+  @@map("dentist_services")
+}
 
-  horaFim String
+model Appointment {
+  id            Int               @id @default(autoincrement())
+  startDateTime DateTime
+  endDateTime   DateTime
+  status        AppointmentStatus @default(SCHEDULED)
 
-  dentistaId Int
+  patientId Int
+  patient   Patient @relation(fields: [patientId], references: [id])
+  dentistId Int
+  dentist   Dentist @relation(fields: [dentistId], references: [userId])
+  serviceId Int
+  service   Service @relation(fields: [serviceId], references: [id])
 
-  dentista Dentist @relation(fields: [dentistaId], references: [id])
+  createdById Int
+  createdBy   User  @relation("CreatedBy", fields: [createdById], references: [id])
+  updatedById Int?
+  updatedBy   User? @relation("UpdatedBy", fields: [updatedById], references: [id])
+
+  originalAppointmentId Int?
+  originalAppointment   Appointment?  @relation("RescheduleChain", fields: [originalAppointmentId], references: [id])
+  rescheduledFrom       Appointment[] @relation("RescheduleChain")
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dentistId, startDateTime])
+  @@index([patientId])
+  @@map("appointments")
+}
+
+model Availability {
+  id        Int     @id @default(autoincrement())
+  weekday   Weekday
+  startTime Int
+  endTime   Int
+  dentistId Int
+  dentist   Dentist @relation(fields: [dentistId], references: [userId], onDelete: Cascade)
+
+  @@unique([dentistId, weekday, startTime])
+  @@map("availabilities")
 }
 
 model ScheduleLock {
-  id Int @id @default(autoincrement())
-
-  dateInitial DateTime
-
-  dateFinal DateTime
-
-  motive String?
-
-  dentistaId Int
-
-  dentista Dentist @relation(fields: [dentistaId], references: [id])
+  id        Int      @id @default(autoincrement())
+  startDate DateTime
+  endDate   DateTime
+  reason    String?
+  dentistId Int
+  dentist   Dentist  @relation(fields: [dentistId], references: [userId], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
+
+  @@map("schedule_locks")
 }
