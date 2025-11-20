@@ -1,9 +1,11 @@
 import express, { Express, Request, Response } from "express";
+import { prisma } from "./lib/prisma";
 import dotenv from "dotenv";
 import helmet from "helmet";
+
 import { corsMiddleware } from "./middlewares/cors.middleware";
 import healthRoutes from "./routes/v1/health.routes";
-import { prisma } from "./lib/prisma";
+import userRoutes from "./routes/v1/user.routes";
 
 dotenv.config();
 
@@ -14,12 +16,12 @@ app.use(helmet());
 app.use(corsMiddleware);
 app.use(express.json());
 
-app.use("/api/v1/health", healthRoutes);
-// app.use("/api/v1/users", userRoutes);
+app.use("/", healthRoutes);
+app.use("/api/v1/users", userRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
-    error: `Route ${req.originalUrl} not found`,
+    error: `Route '${req.originalUrl}' not found`,
   });
 });
 
@@ -27,9 +29,9 @@ async function startServer() {
   try {
     await prisma.$connect();
     console.log("Database connected successfully");
-    
+
     app.listen(PORT, () => {
-      console.log(`\nServer rodando em http://localhost:${PORT}`);
+      console.log(`\nServer listen on http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error("Failure starting server:", error);

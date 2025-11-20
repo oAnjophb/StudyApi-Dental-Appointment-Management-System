@@ -1,16 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Agendamento` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Dentist` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Disponibility` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Patient` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `ScheduleLock` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Servico` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `_DentistToServico` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'RECEPTIONIST', 'DENTIST');
 
@@ -19,57 +6,6 @@ CREATE TYPE "AppointmentStatus" AS ENUM ('SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'
 
 -- CreateEnum
 CREATE TYPE "Weekday" AS ENUM ('SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY');
-
--- DropForeignKey
-ALTER TABLE "Agendamento" DROP CONSTRAINT "Agendamento_dentistaId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Agendamento" DROP CONSTRAINT "Agendamento_pacienteId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Agendamento" DROP CONSTRAINT "Agendamento_servicoId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Disponibility" DROP CONSTRAINT "Disponibility_dentistaId_fkey";
-
--- DropForeignKey
-ALTER TABLE "ScheduleLock" DROP CONSTRAINT "ScheduleLock_dentistaId_fkey";
-
--- DropForeignKey
-ALTER TABLE "_DentistToServico" DROP CONSTRAINT "_DentistToServico_A_fkey";
-
--- DropForeignKey
-ALTER TABLE "_DentistToServico" DROP CONSTRAINT "_DentistToServico_B_fkey";
-
--- DropTable
-DROP TABLE "Agendamento";
-
--- DropTable
-DROP TABLE "Dentist";
-
--- DropTable
-DROP TABLE "Disponibility";
-
--- DropTable
-DROP TABLE "Patient";
-
--- DropTable
-DROP TABLE "ScheduleLock";
-
--- DropTable
-DROP TABLE "Servico";
-
--- DropTable
-DROP TABLE "User";
-
--- DropTable
-DROP TABLE "_DentistToServico";
-
--- DropEnum
-DROP TYPE "AgendamentoStatus";
-
--- DropEnum
-DROP TYPE "Role";
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -103,6 +39,7 @@ CREATE TABLE "patients" (
     "notes" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "patients_pkey" PRIMARY KEY ("id")
 );
@@ -112,7 +49,7 @@ CREATE TABLE "services" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "duration" INTEGER NOT NULL,
-    "price" DECIMAL(65,30),
+    "price" DECIMAL(10,2) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -132,6 +69,7 @@ CREATE TABLE "appointments" (
     "id" SERIAL NOT NULL,
     "startDateTime" TIMESTAMP(3) NOT NULL,
     "endDateTime" TIMESTAMP(3) NOT NULL,
+    "agreedPrice" DECIMAL(10,2) NOT NULL,
     "status" "AppointmentStatus" NOT NULL DEFAULT 'SCHEDULED',
     "patientId" INTEGER NOT NULL,
     "dentistId" INTEGER NOT NULL,
