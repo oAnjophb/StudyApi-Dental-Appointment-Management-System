@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import { prisma } from "./lib/prisma";
 import dotenv from "dotenv";
 import helmet from "helmet";
@@ -6,6 +6,7 @@ import helmet from "helmet";
 import { corsMiddleware } from "./middlewares/cors.middleware";
 import healthRoutes from "./routes/v1/health.routes";
 import userRoutes from "./routes/v1/user.routes";
+import authRouter from "./routes/v1/auth.routes";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/", healthRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/auth", authRouter);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
