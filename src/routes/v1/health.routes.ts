@@ -1,22 +1,9 @@
-import { Router, Request, Response } from 'express';
+import { Router } from "express";
+import { HealthController } from "../../controllers/v1/health.controller"
 
-const router = Router();
+const healthRoutes = Router();
+const healthController = new HealthController()
 
-router.get('/api/health', async (req: Request, res: Response) => {
-  try {
-    res.status(200).json({
-      message: 'API is running',
-      status: 'OK',
-      environment: process.env.NODE_ENV || 'development',
-      database: 'Connected'
-    })
-  } catch (error) {
-    console.log('Health check failed:', error);
-    res.status(500).json({
-      message: 'API is down',
-      status: 'ERROR',
-      database: 'Disconnected'
-    })
-  }
-})
-export default router;
+healthRoutes.get("/", healthController.check)
+
+export default healthRoutes;

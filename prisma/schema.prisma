@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum UserRole {
@@ -78,6 +77,7 @@ model Patient {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   @@map("patients")
 }
@@ -86,7 +86,7 @@ model Service {
   id       Int      @id @default(autoincrement())
   name     String
   duration Int
-  price    Decimal?
+  price    Decimal @db.Decimal(10, 2)
 
   dentists     DentistService[]
   appointments Appointment[]
@@ -112,6 +112,7 @@ model Appointment {
   id            Int               @id @default(autoincrement())
   startDateTime DateTime
   endDateTime   DateTime
+  agreedPrice Decimal @db.Decimal(10, 2)
   status        AppointmentStatus @default(SCHEDULED)
 
   patientId Int

@@ -1,63 +1,41 @@
 import express, { Express, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
-
-import APIhealthRoute from "./routes/v1/health.routes";
+import { corsMiddleware } from "./middlewares/cors.middleware";
+import healthRoutes from "./routes/v1/health.routes";
+import { prisma } from "./lib/prisma";
 
 dotenv.config();
 
-const app: Express = express();
-const prisma: PrismaClient = new PrismaClient();
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
-    credentials: true,
-  })
-);
+app.use(corsMiddleware);
 app.use(express.json());
 
-app.use("/", APIhealthRoute);
+app.use("/api/v1/health", healthRoutes);
+// app.use("/api/v1/users", userRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
     error: `Route ${req.originalUrl} not found`,
-    method: req.method,
   });
 });
 
-async function loadRoutes() {
+async function startServer() {
   try {
-    // app.use('/api/v1', userRoutes);
-
-    console.log("Routes loaded successfully");
-  } catch (error) {
-    console.error("Error loading routes:", error);
-  }
-}
-
-const PORT = process.env.PORT || 3000;
-const startServer = async () => {
-  try {
-    await loadRoutes();
-
+    await prisma.$connect();
+    console.log("Database connected successfully");
+    
     app.listen(PORT, () => {
       console.log(`\nServer rodando em http://localhost:${PORT}`);
-      console.log(
-        `CORS liberado para: ${
-          process.env.CORS_ORIGIN || "http://localhost:3000"
-        }\n`
-      );
     });
-    await prisma.$connect();
   } catch (error) {
-    console.error("Falha ao iniciar o servidor:", error);
+    console.error("Failure starting server:", error);
     await prisma.$disconnect();
     process.exit(1);
   }
-};
+}
 
 startServer();
