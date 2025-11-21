@@ -4,11 +4,13 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 
 import { corsMiddleware } from "./middlewares/cors.middleware";
+
 import healthRoutes from "./routes/v1/health.routes";
 import userRoutes from "./routes/v1/user.routes";
 import authRouter from "./routes/v1/auth.routes";
 import patientRoutes from "./routes/v1/patient.routes";
 import dentistRoutes from "./routes/v1/dentist.routes";
+import serviceRoutes from "./services/v1/service.routes";
 
 dotenv.config();
 
@@ -24,6 +26,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/patients", patientRoutes);
 app.use("/api/v1/dentists", dentistRoutes);
+app.use("/api/v1/services", serviceRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
