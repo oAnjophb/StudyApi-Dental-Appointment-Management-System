@@ -9,7 +9,7 @@ export class AuthService {
       where: { email },
     });
     if (!user) throw new Error("Email or Password incorrect");
-
+    
     const passwordCompare = compare(password, user.password);
     if (!passwordCompare) throw new Error("Email or password incorrect");
 

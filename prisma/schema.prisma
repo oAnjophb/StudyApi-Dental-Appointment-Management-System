@@ -36,7 +36,7 @@ model User {
   id       Int      @id @default(autoincrement())
   name     String
   email    String   @unique
-  password String
+  password String 
   role     UserRole
   dentist  Dentist? @relation("DentistUser")
 

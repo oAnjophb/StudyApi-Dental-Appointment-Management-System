@@ -17,6 +17,7 @@ export function ensureAuthenticated(
       error: "Token is missing",
       code: "token.missing",
     });
+
   const [, token] = authToken.split(" ");
 
   try {
