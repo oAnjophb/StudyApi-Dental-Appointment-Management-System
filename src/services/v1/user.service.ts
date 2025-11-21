@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../../lib/prisma";
 import { CreateUserDTO } from "../../dtos/create-user.dto";
+import { UserRole } from "@prisma/client";
 
 export class UserService {
-  async createUser({ name, email, password }: CreateUserDTO) {
+  async createUser({ name, email, password, role }: CreateUserDTO) {
     const userAlreadyExists = await prisma.user.findUnique({
       where: { email },
     });
@@ -15,7 +16,12 @@ export class UserService {
     const hash = bcrypt.hashSync(password, 10);
 
     const user = await prisma.user.create({
-      data: { name, email, password: hash, role: "RECEPTIONIST" },
+      data: {
+        name,
+        email,
+        password: hash,
+        role: role || UserRole.RECEPTIONIST,
+      },
       select: {
         id: true,
         name: true,

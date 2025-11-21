@@ -5,12 +5,13 @@ const userService = new UserService();
 
 export class UserController {
   createUser = async (req: Request, res: Response): Promise<void> => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     try {
       const result = await userService.createUser({
         name,
         email,
         password,
+        role,
       });
       res.status(200).json(result);
     } catch (error) {
