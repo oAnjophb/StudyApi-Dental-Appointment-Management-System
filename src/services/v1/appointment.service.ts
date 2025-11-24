@@ -110,10 +110,16 @@ export class AppointmentService {
           include: {
             user: { select: { name: true } },
           },
-        }, service: {
-          select: { name: true, duration: true}
-        }
+        },
+        service: {
+          select: { name: true, duration: true },
+        },
+      },
+      orderBy: {
+        startDateTime: "desc",
       },
     });
+
+    return appointments;
   }
 }

@@ -3,21 +3,27 @@ import { AppointmentController } from "../../controllers/v1/appointment.controll
 import { ensureAuthenticated } from "../../middlewares/auth.middleware";
 import { canDoThis } from "../../middlewares/permissions.middleware";
 
-const appointmentRoutes = Router()
-const controller = new AppointmentController()
+const appointmentRoutes = Router();
+const controller = new AppointmentController();
 
-appointmentRoutes.use(ensureAuthenticated)
+appointmentRoutes.use(ensureAuthenticated);
 
 appointmentRoutes.post(
-  "/", 
-  canDoThis(["ADMIN", "RECEPTIONIST"]), 
+  "/",
+  canDoThis(["ADMIN", "RECEPTIONIST"]),
   controller.create
 );
 
 appointmentRoutes.get(
-  "/", 
-  canDoThis(["ADMIN", "RECEPTIONIST", "DENTIST"]), 
+  "/",
+  canDoThis(["ADMIN", "RECEPTIONIST", "DENTIST"]),
   controller.list
 );
 
-export default appointmentRoutes
+appointmentRoutes.get(
+  "/patient/:patientId",
+  canDoThis(["ADMIN", "RECEPTIONIST", "DENTIST"]),
+  controller.listByPatient
+);
+
+export default appointmentRoutes;
