@@ -122,4 +122,45 @@ export class AppointmentService {
 
     return appointments;
   }
+
+  async updateStatus(
+    appointmentId: number,
+    status: AppointmentStatus,
+    userId: number,
+    notes?: string
+  ) {
+    const appointment = await prisma.appointment.findUnique({
+      where: { id: appointmentId },
+    });
+
+    if (!appointment) throw new Error("Appointment not found");
+
+    if (
+      appointment.status === AppointmentStatus.COMPLETED &&
+      status !== AppointmentStatus.COMPLETED
+    ) {
+      throw new Error("Cannot change status of a completed appointment");
+    }
+
+    const newNotes = notes
+      ? appointment.notes
+        ? `${appointment.notes} | ${notes}`
+        : notes
+      : appointment.notes;
+
+    const updatedAppointment = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        status: status,
+        notes: newNotes,
+        updatedById: userId,
+      },
+      include: {
+        patient: { select: { name: true } },
+        service: { select: { name: true } },
+      },
+    });
+
+    return updatedAppointment;
+  }
 }

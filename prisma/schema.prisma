@@ -71,7 +71,15 @@ model Patient {
   phone     String
   email     String?
   birthDate DateTime?
-  address   String?
+
+  zipCode      String? 
+  street       String?
+  number       String? 
+  complement   String?
+  neighborhood String?
+  city         String? 
+  state        String?
+
   notes     String?
 
   appointments Appointment[]

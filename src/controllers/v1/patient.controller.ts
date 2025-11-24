@@ -6,10 +6,10 @@ const service = new PatientService();
 export class PatientController {
   create = async (req: Request, res: Response) => {
     try {
-      
       const result = await service.create(req.body);
       return res.status(201).json(result);
     } catch (error) {
+      console.log(error);
       return res.status(400).json({ error: "Error creating pacient" });
     }
   };

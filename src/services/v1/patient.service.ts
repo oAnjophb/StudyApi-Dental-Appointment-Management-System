@@ -5,24 +5,26 @@ import {
 } from "../../dtos/create-patient.dto";
 
 export class PatientService {
-  async create({
-    name,
-    phone,
-    email,
-    birthDate,
-    address,
-    notes,
-  }: CreatePatientDTO) {
+  async create(data: CreatePatientDTO) {
+    const birthDateObject = data.birthDate ? new Date(data.birthDate) : null;
+
     const patient = await prisma.patient.create({
       data: {
-        name,
-        phone,
-        email,
-        birthDate,
-        address,
-        notes,
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        birthDate: birthDateObject,
+        notes: data.notes,
+        zipCode: data.zipCode,
+        street: data.street,
+        number: data.number,
+        complement: data.complement,
+        neighborhood: data.neighborhood,
+        city: data.city,
+        state: data.state,
       },
     });
+
     return patient;
   }
 
@@ -43,10 +45,12 @@ export class PatientService {
 
     const birthDate = data.birthDate ? new Date(data.birthDate) : undefined;
 
+    const { birthDate: string, ...restData } = data
+
     return await prisma.patient.update({
       where: { id },
       data: {
-        ...data,
+        ...restData,
         birthDate,
       },
     });

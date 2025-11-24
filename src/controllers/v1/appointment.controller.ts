@@ -37,4 +37,28 @@ export class AppointmentController {
       return res.status(500).json({ error: "Internal error" });
     }
   };
+
+  updateStatus = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { status, notes } = req.body;
+      const userId = req.user_id;
+
+      const result = await serviceLayer.updateStatus(
+        Number(id),
+        status,
+        Number(userId),
+        notes
+      );
+
+      return res.json(result);
+    } catch (error) {
+      if (error instanceof Error && error.message === "Appointment not found") {
+        return res.status(404).json({ error: error.message });
+      }
+      return res
+        .status(400)
+        .json({ error: error instanceof Error ? error.message : "Error" });
+    }
+  };
 }

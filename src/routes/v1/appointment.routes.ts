@@ -26,4 +26,10 @@ appointmentRoutes.get(
   controller.listByPatient
 );
 
+appointmentRoutes.patch(
+  "/:id/status",
+  canDoThis(["ADMIN", "RECEPTIONIST", "DENTIST"]),
+  controller.updateStatus
+);
+
 export default appointmentRoutes;
