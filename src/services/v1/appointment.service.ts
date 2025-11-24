@@ -93,4 +93,27 @@ export class AppointmentService {
       },
     });
   }
+
+  async patientHistory(patientId: number) {
+    const patientExists = await prisma.patient.findUnique({
+      where: { id: patientId },
+    });
+
+    if (!patientExists) throw new Error("Patient not found");
+
+    const appointments = await prisma.appointment.findMany({
+      where: {
+        patientId: patientId,
+      },
+      include: {
+        dentist: {
+          include: {
+            user: { select: { name: true } },
+          },
+        }, service: {
+          select: { name: true, duration: true}
+        }
+      },
+    });
+  }
 }
