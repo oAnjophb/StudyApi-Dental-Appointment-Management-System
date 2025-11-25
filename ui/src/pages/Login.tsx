@@ -6,10 +6,11 @@ const Login = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Presentation */}
-      <div 
+      <div
         className="hidden lg:flex lg:w-1/2 relative overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, hsl(var(--purple-700)) 0%, hsl(var(--purple-500)) 100%)',
+          background:
+            "linear-gradient(135deg, hsl(var(--purple-700)) 0%, hsl(var(--purple-500)) 100%)",
         }}
       >
         {/* Hero Image with Overlay */}
@@ -43,14 +44,17 @@ const Login = () => {
           <div className="space-y-6 animate-slide-in-left">
             <div className="space-y-4">
               <h1 className="text-5xl font-bold leading-tight">
-                Transformando<br />
-                sorrisos,<br />
-                otimizando sua<br />
+                Transformando
+                <br />
+                sorrisos,
+                <br />
+                otimizando sua
+                <br />
                 gestão
               </h1>
               <p className="text-lg text-white/90 max-w-md">
-                Gerencie sua clínica odontológica com eficiência, 
-                controle de pacientes, agendamentos e muito mais em um só lugar.
+                Gerencie sua clínica odontológica com eficiência, controle de
+                pacientes, agendamentos e muito mais em um só lugar.
               </p>
             </div>
 
@@ -58,22 +62,32 @@ const Login = () => {
             <div className="space-y-3 pt-6">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse-glow" />
-                <span className="text-white/90">Gestão completa de pacientes</span>
+                <span className="text-white/90">
+                  Gestão completa de pacientes
+                </span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse-glow" style={{ animationDelay: '0.2s' }} />
+                <div
+                  className="w-2 h-2 rounded-full bg-pink-500 animate-pulse-glow"
+                  style={{ animationDelay: "0.2s" }}
+                />
                 <span className="text-white/90">Agendamento inteligente</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse-glow" style={{ animationDelay: '0.4s' }} />
-                <span className="text-white/90">Controle financeiro integrado</span>
+                <div
+                  className="w-2 h-2 rounded-full bg-pink-500 animate-pulse-glow"
+                  style={{ animationDelay: "0.4s" }}
+                />
+                <span className="text-white/90">
+                  Controle financeiro integrado
+                </span>
               </div>
             </div>
           </div>
 
           {/* Footer */}
           <div className="text-sm text-white/60 animate-fade-in">
-            © 2024 DentalCare. Todos os direitos reservados.
+            &copy; 2025 DentalCare. Todos os direitos reservados.
           </div>
         </div>
       </div>
@@ -87,11 +101,15 @@ const Login = () => {
               <img
                 src={dentalLogo}
                 alt="Dental Clinic Logo"
-                className="h-10 w-10"
+                className="h-20 w-25"
               />
               <div>
-                <h2 className="text-xl font-bold text-foreground">DentalCare</h2>
-                <p className="text-xs text-muted-foreground">Sistema de Gestão</p>
+                <h2 className="text-xl font-bold text-foreground">
+                  DentalCare
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Sistema de Gestão
+                </p>
               </div>
             </div>
           </div>
