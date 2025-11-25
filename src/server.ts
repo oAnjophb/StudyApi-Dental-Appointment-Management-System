@@ -18,16 +18,16 @@ import scheduleLockRoutes from "./routes/v1/schedule-lock.routes";
 dotenv.config();
 
 const app = express();
-app.use(corsMiddleware);
 
 const PORT = process.env.PORT || 3000;
 
 app.use(helmet());
+app.use(corsMiddleware);
 app.use(express.json());
 
 app.use("/", healthRoutes);
-app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/patients", patientRoutes);
 app.use("/api/v1/dentists", dentistRoutes);
 app.use("/api/v1/services", serviceRoutes);
