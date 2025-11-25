@@ -58,6 +58,19 @@ export class AppointmentService {
     if (conflictAppoiment)
       throw new Error("Denstist is not available at this time");
 
+    const isBlocked = await prisma.scheduleLock.findFirst({
+      where: {
+        dentistId: dentistId,
+        startDate: { lte: endDate },
+        endDate: { gte: startDate },
+      },
+    });
+    if (isBlocked) {
+      throw new Error(
+        `Dentist schedule is locked for this date: ${isBlocked.reason}`
+      );
+    }
+
     const appointment = await prisma.appointment.create({
       data: {
         startDateTime: startDate,

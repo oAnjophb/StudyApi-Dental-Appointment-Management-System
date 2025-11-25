@@ -41,9 +41,9 @@ export class AvailabilityService {
     });
   }
 
-  async listByDentist(dentistUserId: number) {
+  async listByDentist(dentistId: number) {
     return await prisma.availability.findMany({
-      where: { dentistId: dentistUserId },
+      where: { dentistId },
       orderBy: { weekday: "asc" },
     });
   }

@@ -13,6 +13,7 @@ import dentistRoutes from "./routes/v1/dentist.routes";
 import serviceRoutes from "./routes/v1/service.routes";
 import appointmentRoutes from "./routes/v1/appointment.routes";
 import availabilityRoutes from "./routes/v1/availability.routes";
+import scheduleLockRoutes from "./routes/v1/schedule-lock.routes";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api/v1/dentists", dentistRoutes);
 app.use("/api/v1/services", serviceRoutes);
 app.use("/api/v1/appointments", appointmentRoutes);
 app.use("/api/v1/availabilities", availabilityRoutes);
+app.use("/api/v1/locks", scheduleLockRoutes)
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
