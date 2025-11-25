@@ -1,116 +1,68 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap');
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
 
-/* Dental Clinic Management System Design System
-   Based on Purple Dream UI with dental healthcare aesthetics
-   All colors MUST be HSL for proper Tailwind integration
-*/
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-@layer base {
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
   :root {
-    /* Purple palette - Primary brand colors */
-    --purple-900: 276 37% 17%;      /* #2A1B3D */
-    --purple-700: 276 24% 28%;      /* #443156 */
-    --purple-500: 276 25% 40%;      /* #6D4C7D */
-    --purple-300: 276 20% 61%;      /* #A88DB3 */
-
-    /* Pink palette - Secondary/Accent colors */
-    --pink-500: 349 88% 78%;        /* #F69EAE */
-    --pink-300: 349 86% 86%;        /* #F9C0CB */
-
-    /* Neutral palette */
-    --neutral-white: 0 0% 100%;     /* #FFFFFF */
-    --neutral-gray-100: 0 0% 96%;   /* #F5F5F5 */
-    --neutral-gray-400: 0 0% 60%;   /* #999999 */
-    --neutral-gray-800: 0 0% 20%;   /* #333333 */
-    --neutral-black: 0 0% 0%;       /* #000000 */
-
-    /* Semantic tokens for components */
-    --background: var(--neutral-white);
-    --foreground: var(--neutral-gray-800);
-
-    --card: var(--neutral-white);
-    --card-foreground: var(--neutral-gray-800);
-
-    --popover: var(--neutral-white);
-    --popover-foreground: var(--neutral-gray-800);
-
-    --primary: var(--purple-500);
-    --primary-foreground: var(--neutral-white);
-
-    --secondary: var(--pink-500);
-    --secondary-foreground: var(--neutral-white);
-
-    --muted: var(--neutral-gray-100);
-    --muted-foreground: var(--neutral-gray-400);
-
-    --accent: var(--pink-300);
-    --accent-foreground: var(--neutral-white);
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: var(--neutral-white);
-
-    --border: var(--neutral-gray-100);
-    --input: var(--pink-500);
-    --input-foreground: var(--neutral-white);
-    --ring: var(--purple-500);
-
-    --radius: 0.5rem;
-
-    /* Custom design tokens */
-    --spacing-xs: 0.25rem;    /* 4px */
-    --spacing-sm: 0.5rem;     /* 8px */
-    --spacing-md: 1rem;       /* 16px */
-    --spacing-lg: 1.5rem;     /* 24px */
-    --spacing-xl: 2rem;       /* 32px */
-    --spacing-xxl: 3rem;      /* 48px */
-
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--purple-700)) 0%, hsl(var(--purple-500)) 100%);
-    
-    /* Shadows */
-    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
-    --shadow-button: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-input-focus: 0 0 0 3px hsla(var(--purple-500), 0.2);
-
-    /* Transitions */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: all 0.15s ease;
-
-    /* Typography sizes */
-    --text-h1: 2rem;
-    --text-body: 1rem;
-    --text-small: 0.875rem;
-    --text-tiny: 0.75rem;
+    color: #213547;
+    background-color: #ffffff;
   }
-}
-
-@layer base {
-  * {
-    @apply border-border;
+  a:hover {
+    color: #747bff;
   }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Montserrat', 'Poppins', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
+  button {
+    background-color: #f9f9f9;
   }
 }

@@ -18,10 +18,11 @@ import scheduleLockRoutes from "./routes/v1/schedule-lock.routes";
 dotenv.config();
 
 const app = express();
+app.use(corsMiddleware);
+
 const PORT = process.env.PORT || 3000;
 
 app.use(helmet());
-app.use(corsMiddleware);
 app.use(express.json());
 
 app.use("/", healthRoutes);
@@ -32,7 +33,7 @@ app.use("/api/v1/dentists", dentistRoutes);
 app.use("/api/v1/services", serviceRoutes);
 app.use("/api/v1/appointments", appointmentRoutes);
 app.use("/api/v1/availabilities", availabilityRoutes);
-app.use("/api/v1/locks", scheduleLockRoutes)
+app.use("/api/v1/locks", scheduleLockRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
