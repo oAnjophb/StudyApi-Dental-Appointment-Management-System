@@ -1,7 +1,7 @@
 import AuthLayout from "../components/layout/AuthLayout";
 import Header from "../components/layout/Header";
 import LoginTitle from "../components/layout/LoginTitle";
-import LoginForm from "../components/forms/LoginForms";
+import LoginForms from "../components/forms/LoginForms";
 import LoginFooter from "../components/layout/LoginFooter";
 
 function LoginPage() {
@@ -9,8 +9,8 @@ function LoginPage() {
     <AuthLayout>
       <Header />
       <LoginTitle />
-      <LoginForm />
-      <LoginFooter />
+      <LoginForms />
+      <LoginFooter/>
     </AuthLayout>
   );
 }
